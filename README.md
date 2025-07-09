@@ -84,7 +84,7 @@ Construir un pipeline de ciencia de datos — desde la ingesta del JSON origin
 
 ---
 
-## 6. Recomendaciones
+## 6. Recomendaciones de los modelos 
 
 1. **Umbral según negocio**  
    Bajar threshold de LogReg a ≈ 0.35 aumenta el recall a ~75 %.
@@ -98,4 +98,46 @@ Construir un pipeline de ciencia de datos — desde la ingesta del JSON origin
 4. **Despliegue piloto**  
    Gatillar alertas semanales al equipo de fidelización para ofertas proactivas.
 
+---
+
+## 7. Interpretación de resultados
+
+### 7.1 Importancia de variables (XGBoost ≈ LogReg)
+
+| Rank | Variable | Tendencia | Comentario |
+|------|----------|-----------|------------|
+| 1 | **CONTRATO_Month‑to‑month** | ↑ riesgo | Plan mes a mes = mayor libertad para cancelar |
+| 2 | **ANTIGUEDAD_CLIENTE (baja)** | ↑ riesgo | < 6 meses duplica la probabilidad de churn |
+| 3 | **CARGO_MENSUAL alto** | ↑ riesgo | Boletas > \$80 generan fricción |
+| 4 | **METODO_PAGO_Electronic check** | ↑ riesgo | Método asociado a mayor incertidumbre de pago |
+| 5 | **SOPORTE_TECNICO = 0** | ↑ riesgo | Falta de soporte incrementa frustración |
+| 6 | **STREAMING = 1** | ↓ riesgo | Más uso del servicio = más fidelidad |
+| 7 | **SEGURIDAD_ONLINE = 0** | ↑ riesgo | Menor percepción de valor |
+| 8 | **PROTECCION_DISPOSITIVOS = 0** | ↑ riesgo | Patrón similar a seguridad |
+| 9 | **RESPALDO_ONLINE = 0** | ↑ riesgo | Menos add‑ons → menos compromiso |
+| 10 | **GENERO_CLIENTE = Male** | ↑ riesgo (ligero) | ~3 p.p. mayor churn frente a Female |
+
+> *Método:* coeficientes (LogReg) y `feature_importances_` (RF/XGB) agregados por variable; normalizados 0–100 %.
+
+---
+
+## 8. Conclusión estratégica
+
+1. **Migrar contratos mes a mes a planes anuales**  
+   Bonos de instalación ↔ descuento; objetivo: ↓ churn en 15 %.
+
+2. **Onboarding intensivo en los 3 primeros meses**  
+   Tutorial + welcome‑call + habilitar add‑ons; meta: –20 % churn temprano.
+
+3. **Bundles de valor (streaming + soporte + seguridad)**  
+   Clientes con ≥ 2 servicios presentan 15 % menos cancelaciones.
+
+4. **Alertas por cargos altos**  
+   Si `CARGO_MENSUAL > $80`, ofrecer cambio de plan o beneficio.
+
+5. **Campaña de cambio de método de pago**  
+   Migrar usuarios de *Electronic check* a débito / tarjeta → –8 p.p. riesgo estimado.
+
+
+---
 
